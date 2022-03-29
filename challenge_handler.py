@@ -53,8 +53,8 @@ class Challenge_Handler(Thread):
                     continue
 
                 challenge_id = event['challenge']['id']
-                challenger_title = event['challenge']['challenger']['title'] if event['challenge']['challenger'][
-                    'title'] else ''
+                challenger_title = event['challenge']['challenger']['title']
+                challenger_title = challenger_title if challenger_title else ''
                 challenger_rating = event['challenge']['challenger']['rating']
                 tc = event['challenge']['timeControl'].get('show')
                 rated = event['challenge']['rated']
@@ -125,31 +125,45 @@ class Challenge_Handler(Thread):
         is_bot = event['challenge']['challenger']['title'] == 'BOT'
         modes = self.config['challenge']['bot_modes'] if is_bot else self.config['challenge']['human_modes']
 
+        if modes is None:
+            if is_bot:
+                print('Bots are not allowed according to config.')
+                return Decline_Reason.NO_BOT
+            else:
+                print('Only bots are allowed according to config.')
+                return Decline_Reason.ONLY_BOT
+
         variant = event['challenge']['variant']['key']
         if variant not in variants:
-            print(f'Variant "{variant}" is not allowed by config!')
+            print(f'Variant "{variant}" is not allowed according to config.')
             return Decline_Reason.VARIANT
 
         speed = event['challenge']['speed']
         increment = event['challenge']['timeControl'].get('increment')
         initial = event['challenge']['timeControl'].get('limit')
         if speed not in time_controls:
-            print(f'Speed "{speed}" is not allowed by config!')
+            print(f'Time control "{speed}" is not allowed according to config.')
             return Decline_Reason.TIME_CONTROL
-        elif increment < min_increment or increment > max_increment:
-            print(f'Increment {increment} is not allowed by config!')
-            return Decline_Reason.TIME_CONTROL
-        elif initial < min_initial or initial > max_initial:
-            print(f'Initial time {initial} is not allowed by config!')
-            return Decline_Reason.TIME_CONTROL
+        elif increment < min_increment:
+            print(f'Increment {increment} is too short according to config.')
+            return Decline_Reason.TOO_FAST
+        elif increment > max_increment:
+            print(f'Increment {increment} is too long according to config.')
+            return Decline_Reason.TOO_SLOW
+        elif initial < min_initial:
+            print(f'Initial time {initial} is too short according to config.')
+            return Decline_Reason.TOO_FAST
+        elif initial > max_initial:
+            print(f'Initial time {initial} is too long according to config.')
+            return Decline_Reason.TOO_SLOW
 
         is_rated = event['challenge']['rated']
         is_casual = not is_rated
         if is_rated and 'rated' not in modes:
-            print(f'Rated is not allowed by config!')
+            print(f'Rated is not allowed according to config.')
             return Decline_Reason.CASUAL
         elif is_casual and 'casual' not in modes:
-            print(f'Casual is not allowed by config!')
+            print(f'Casual is not allowed according to config.')
             return Decline_Reason.RATED
 
         if not self.accept_challenges:
@@ -157,5 +171,5 @@ class Challenge_Handler(Thread):
             return Decline_Reason.LATER
 
         if self.game_count.is_max():
-            print(f'Not more then {self.game_count.max_games} concurrend game(s) allowed by config!')
+            print(f'Not more then {self.game_count.max_games} concurrend game(s) allowed according to config.')
             return Decline_Reason.LATER
