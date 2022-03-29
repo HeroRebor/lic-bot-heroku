@@ -9,8 +9,8 @@ engine:                                   # Engine settings.
     books:
      # white: "lichess_torombot_2022-03-04.bin"                         # Name of the book to use as white.
      # black: "lichess-book"                        # Name of the book to use as black.
-      standard: "lichess-book"            # Name of the book to use if there is no specific book for white, black or chess960.
-      chess960: null                      # Name of the book to use for Chess960.
+      standard: ""            # Name of the book to use if there is no specific book for white, black or chess960.
+      #chess960: null                      # Name of the book to use for Chess960.
     selection: "best_move"                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
   pybook:
     enabled: false                        # Activate pybook.
