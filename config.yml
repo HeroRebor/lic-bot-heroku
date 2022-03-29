@@ -1,15 +1,15 @@
-token: "lip_EXDoji9ulOKovlzkxo2J"         # Lichess OAuth2 Token.
+token: "lip_eOV7ZDhA4RSdHex1p0oq"         # Lichess OAuth2 Token.
 
 engine:                                   # Engine settings.
   dir: "./engines"               # Directory containing the engine.
-  name: "fsf"                      # Binary name of the engine to use.
+  name: "stockfish_14.1_linux_x64_popcnt"                      # Binary name of the engine to use.
   ponder: true                            # Think on opponent's time.
   polyglot:
-    enabled: false                         # Activate polyglot book.
+    enabled: true                         # Activate polyglot book.
     books:
-      white: null                         # Name of the book to use as white.
-      black: null                         # Name of the book to use as black.
-      standard: ""             # Name of the book to use if there is no specific book for white, black or chess960.
+      white: "lichess_torombot_2022-03-04.bin"                         # Name of the book to use as white.
+      black: "lichess-book"                        # Name of the book to use as black.
+      standard: null             # Name of the book to use if there is no specific book for white, black or chess960.
       chess960: null                      # Name of the book to use for Chess960.
     selection: "best_move"                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
   pybook:
@@ -74,19 +74,20 @@ challenge:                                # Incoming challenges. (Commenting all
     - classical
   bot_modes:                              # Game modes to accept against BOTs.
     - casual                              # Unrated games.
-    - rated                               # Rated games
+ #   - rated                               # Rated games
   human_modes:                            # Game modes to accept against humans.
     - casual                              # Unrated games.
     - rated                               # Rated games. 
 
 matchmaking:
-  initial_time: 60                        # Initial time for matchmaking mode.
-  increment: 1                            # Increment time for matchmaking mode.
-  rated: true                             # Activate rated games in matchmaking mode.
+  initial_time: 30                        # Initial time for matchmaking mode.
+  increment: 0                            # Increment time for matchmaking mode.
+  rated: false                             # Activate rated games in matchmaking mode.
   timeout: 10                             # Time until a challenge is canceled. 
 # min_rating_diff: 0                      # Minimum rating distance to opponent. (Commenting allowed)
 # max_rating_diff: 300                    # Maximum rating distance to opponent. (Commenting allowed)
 
 
 books: 
-    lichess_torombot_2022-03-04: "./engines/lichess_torombot_2022-03-04.bin"  # Name of the opening book (to be used above in the polyglot section) and path to the polyglot opening book.                  
+    lichess_torombot_2022-03-04: "./engines/lichess_torombot_2022-03-04.bin"  # Name of the opening book (to be used above in the polyglot section) and path to the polyglot opening book.
+    lichess-book: "./engines/lichess-book"
