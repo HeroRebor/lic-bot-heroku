@@ -34,7 +34,7 @@ def load_config() -> dict:
                 raise Exception(f'`engine` subsection {subsection[2]}')
 
         if not os.path.isdir(CONFIG['engine']['dir']):
-            raise Exception(f'Your engine directory "{CONFIG["engine"]["dir"]}" is not a directory.')
+            raise Exception(f'Your engine directory `{CONFIG["engine"]["dir"]}` is not a directory.')
 
         CONFIG['engine']['path'] = os.path.join(CONFIG['engine']['dir'], CONFIG['engine']['name'])
 
